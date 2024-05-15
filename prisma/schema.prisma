@@ -33,9 +33,10 @@ model User {
 
   createdAt DateTime @default(now()) @map("created_at")
 
-  products   Product[]
-  warehouses Warehouse[]
-  suppliers  Supplier[]
+  products    Product[]
+  warehouses  Warehouse[]
+  suppliers   Supplier[]
+  costCenters CostCenter[]
 
   @@map("users")
 }
@@ -80,4 +81,18 @@ model Supplier {
   updatedBy   String?   @map("updated_by")
 
   @@map("suppliers")
+}
+
+model CostCenter {
+  id        String    @id @default(uuid())
+  code      String    @unique
+  name      String
+  status    Int
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdBy String    @map("created_by")
+  user      User      @relation(fields: [createdBy], references: [id])
+  updatedAt DateTime? @default(now()) @map("updated_at")
+  updatedBy String?   @map("updated_by")
+
+  @@map("costcenters")
 }
