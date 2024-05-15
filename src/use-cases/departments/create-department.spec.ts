@@ -1,4 +1,4 @@
-import { InMemoryDepartmentsRepository } from '@/repositories/in-memory/in-memory-departments-repository'
+import { InMemoryDepartmentsRepository } from 'test/in-memory/in-memory-departments-repository'
 import { CreateDepartmentUseCase } from './create-department'
 import { randomUUID } from 'node:crypto'
 import { describe, beforeEach, it, expect } from 'vitest'

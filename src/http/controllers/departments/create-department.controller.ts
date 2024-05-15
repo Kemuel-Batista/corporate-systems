@@ -17,7 +17,7 @@ export class CreateDepartmentController {
     const result = await createDepartmentUseCase.execute({
       name,
       description,
-      createdBy: request.user.id,
+      createdBy: request.user.sub,
     })
 
     if (result.isError()) {

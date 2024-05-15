@@ -1,5 +1,5 @@
 import { Department, Prisma } from '@prisma/client'
-import { DepartmentsRepository } from '../departments-repository'
+import { DepartmentsRepository } from '../../src/repositories/departments-repository'
 import { randomUUID } from 'node:crypto'
 
 export class InMemoryDepartmentsRepository implements DepartmentsRepository {

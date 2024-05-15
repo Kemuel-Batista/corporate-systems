@@ -33,5 +33,19 @@ model User {
 
   createdAt DateTime @default(now()) @map("created_at")
 
+  products Product[]
+
   @@map("users")
+}
+
+model Product {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  description String
+  status      Int
+  createdAt   DateTime  @default(now()) @map("created_at")
+  createdBy   String    @map("created_by")
+  user        User      @relation(fields: [createdBy], references: [id])
+  updatedAt   DateTime? @default(now()) @map("updated_at")
+  updatedBy   String?   @map("updated_by")
 }

@@ -1,4 +1,4 @@
-import { InMemoryDepartmentsRepository } from '@/repositories/in-memory/in-memory-departments-repository'
+import { InMemoryDepartmentsRepository } from 'test/in-memory/in-memory-departments-repository'
 import { ListDepartmentsUseCase } from './list-departments'
 import { makeDepartment } from 'test/factories/make-department'
 
