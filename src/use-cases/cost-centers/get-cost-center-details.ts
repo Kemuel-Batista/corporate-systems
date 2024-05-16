@@ -1,6 +1,6 @@
 import { Either, failure, success } from '@/core/either'
 import { CostCentersRepository } from '@/repositories/cost-centers-repository'
-import { ResourceNotFoundError } from '../errors/resource-not-found-error'
+import { ResourceNotFoundError } from '../../core/errors/resource-not-found-error'
 import { CostCenter } from '@prisma/client'
 
 interface GetCostCenterDetailsUseCaseRequest {

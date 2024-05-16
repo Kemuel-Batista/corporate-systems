@@ -1,5 +1,5 @@
 import { DepartmentsRepository } from '@/repositories/departments-repository'
-import { ResourceAlreadyExistsError } from '../errors/resource-already-exists-error'
+import { ResourceAlreadyExistsError } from '../../core/errors/resource-already-exists-error'
 import { Department } from '@prisma/client'
 import { Either, failure, success } from '@/core/either'
 

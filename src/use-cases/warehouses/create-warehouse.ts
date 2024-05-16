@@ -1,5 +1,5 @@
 import { WarehousesRepository } from '@/repositories/warehouses-repository'
-import { ResourceAlreadyExistsError } from '../errors/resource-already-exists-error'
+import { ResourceAlreadyExistsError } from '../../core/errors/resource-already-exists-error'
 import { Warehouse } from '@prisma/client'
 import { Either, failure, success } from '@/core/either'
 

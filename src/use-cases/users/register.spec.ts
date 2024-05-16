@@ -2,7 +2,7 @@ import { expect, describe, it, beforeEach } from 'vitest'
 import { RegisterUseCase } from './register'
 import { compare } from 'bcryptjs'
 import { InMemoryUsersRepository } from 'test/in-memory/in-memory-users-repository'
-import { ResourceAlreadyExistsError } from '../errors/resource-already-exists-error'
+import { ResourceAlreadyExistsError } from '../../core/errors/resource-already-exists-error'
 
 let usersRepository: InMemoryUsersRepository
 let sut: RegisterUseCase

@@ -2,7 +2,7 @@ import { InMemoryProductsRepository } from 'test/in-memory/in-memory-products-re
 import { EditProductUseCase } from './edit-product'
 import { randomUUID } from 'node:crypto'
 import { describe, beforeEach, it, expect } from 'vitest'
-import { ResourceAlreadyExistsError } from '../errors/resource-already-exists-error'
+import { ResourceAlreadyExistsError } from '../../core/errors/resource-already-exists-error'
 import { makeProduct } from 'test/factories/make-product'
 import { ProductStatus } from '@/enums/product'
 

@@ -2,7 +2,7 @@ import { InMemoryCostCentersRepository } from 'test/in-memory/in-memory-cost-cen
 import { CreateCostCenterUseCase } from './create-cost-center'
 import { randomUUID } from 'node:crypto'
 import { describe, beforeEach, it, expect } from 'vitest'
-import { ResourceAlreadyExistsError } from '../errors/resource-already-exists-error'
+import { ResourceAlreadyExistsError } from '../../core/errors/resource-already-exists-error'
 import { CostCenterStatus } from '@/enums/cost-center'
 
 let inMemoryCostCentersRepository: InMemoryCostCentersRepository

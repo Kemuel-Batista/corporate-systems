@@ -2,7 +2,7 @@ import { InMemoryWarehousesRepository } from 'test/in-memory/in-memory-warehouse
 import { CreateWarehouseUseCase } from './create-warehouse'
 import { randomUUID } from 'node:crypto'
 import { describe, beforeEach, it, expect } from 'vitest'
-import { ResourceAlreadyExistsError } from '../errors/resource-already-exists-error'
+import { ResourceAlreadyExistsError } from '../../core/errors/resource-already-exists-error'
 import { WarehouseStatus } from '@/enums/warehouse'
 
 let inMemoryWarehousesRepository: InMemoryWarehousesRepository

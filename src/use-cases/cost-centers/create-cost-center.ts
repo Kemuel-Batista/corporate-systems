@@ -1,5 +1,5 @@
 import { CostCentersRepository } from '@/repositories/cost-centers-repository'
-import { ResourceAlreadyExistsError } from '../errors/resource-already-exists-error'
+import { ResourceAlreadyExistsError } from '../../core/errors/resource-already-exists-error'
 import { CostCenter } from '@prisma/client'
 import { Either, failure, success } from '@/core/either'
 

@@ -1,5 +1,5 @@
 import { makeCreateDepartmentUseCase } from '@/use-cases/departments/factories/make-create-department'
-import { ResourceAlreadyExistsError } from '@/use-cases/errors/resource-already-exists-error'
+import { ResourceAlreadyExistsError } from '@/core/errors/resource-already-exists-error'
 import { Request, Response } from 'express'
 import { z } from 'zod'
 

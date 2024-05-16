@@ -1,6 +1,6 @@
 import { Either, failure, success } from '@/core/either'
 import { ProductsRepository } from '@/repositories/products-repository'
-import { ResourceNotFoundError } from '../errors/resource-not-found-error'
+import { ResourceNotFoundError } from '../../core/errors/resource-not-found-error'
 import { Product } from '@prisma/client'
 
 interface GetProductDetailsUseCaseRequest {

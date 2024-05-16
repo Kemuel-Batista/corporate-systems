@@ -1,5 +1,5 @@
 import { ProductsRepository } from '@/repositories/products-repository'
-import { ResourceAlreadyExistsError } from '../errors/resource-already-exists-error'
+import { ResourceAlreadyExistsError } from '../../core/errors/resource-already-exists-error'
 import { Product } from '@prisma/client'
 import { Either, failure, success } from '@/core/either'
 

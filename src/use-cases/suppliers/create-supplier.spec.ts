@@ -2,7 +2,7 @@ import { InMemorySuppliersRepository } from 'test/in-memory/in-memory-suppliers-
 import { CreateSupplierUseCase } from './create-supplier'
 import { randomUUID } from 'node:crypto'
 import { describe, beforeEach, it, expect } from 'vitest'
-import { ResourceAlreadyExistsError } from '../errors/resource-already-exists-error'
+import { ResourceAlreadyExistsError } from '../../core/errors/resource-already-exists-error'
 import { SupplierStatus } from '@/enums/supplier'
 
 let inMemorySuppliersRepository: InMemorySuppliersRepository

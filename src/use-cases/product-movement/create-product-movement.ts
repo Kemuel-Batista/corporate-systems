@@ -3,7 +3,7 @@ import { ProductMovement } from '@prisma/client'
 import { Either, failure, success } from '@/core/either'
 import { ProductMovementRepository } from '@/repositories/product-movement-repository'
 import { WarehousesRepository } from '@/repositories/warehouses-repository'
-import { ResourceNotFoundError } from '../errors/resource-not-found-error'
+import { ResourceNotFoundError } from '../../core/errors/resource-not-found-error'
 
 interface CreateProductMovementUseCaseRequest {
   productId: string

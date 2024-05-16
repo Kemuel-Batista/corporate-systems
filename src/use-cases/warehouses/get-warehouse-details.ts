@@ -1,6 +1,6 @@
 import { Either, failure, success } from '@/core/either'
 import { WarehousesRepository } from '@/repositories/warehouses-repository'
-import { ResourceNotFoundError } from '../errors/resource-not-found-error'
+import { ResourceNotFoundError } from '../../core/errors/resource-not-found-error'
 import { Warehouse } from '@prisma/client'
 
 interface GetWarehouseDetailsUseCaseRequest {

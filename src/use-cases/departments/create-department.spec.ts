@@ -2,7 +2,7 @@ import { InMemoryDepartmentsRepository } from 'test/in-memory/in-memory-departme
 import { CreateDepartmentUseCase } from './create-department'
 import { randomUUID } from 'node:crypto'
 import { describe, beforeEach, it, expect } from 'vitest'
-import { ResourceAlreadyExistsError } from '../errors/resource-already-exists-error'
+import { ResourceAlreadyExistsError } from '../../core/errors/resource-already-exists-error'
 
 let inMemoryDepartmentsRepository: InMemoryDepartmentsRepository
 
