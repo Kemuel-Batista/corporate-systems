@@ -1,18 +1,18 @@
-import { Prisma } from '@prisma/client'
+import { Warehouse } from '@prisma/client'
 import { faker } from '@faker-js/faker'
-import { randomUUID } from 'crypto'
+import { randomUUID } from 'node:crypto'
 import { WarehouseStatus } from '@/enums/warehouse'
 
-interface WarehouseProps extends Prisma.WarehouseUncheckedCreateInput {}
-
-export function makeWarehouse(
-  override: Partial<WarehouseProps> = {},
-): WarehouseProps {
+export function makeWarehouse(override: Partial<Warehouse> = {}): Warehouse {
   return {
+    id: randomUUID(),
     name: faker.commerce.isbn(),
     description: faker.commerce.department(),
     status: WarehouseStatus.ACTIVE,
     createdBy: randomUUID(),
+    createdAt: new Date(),
+    updatedAt: null,
+    updatedBy: null,
     ...override,
   }
 }

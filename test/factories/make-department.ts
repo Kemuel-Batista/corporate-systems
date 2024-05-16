@@ -1,16 +1,18 @@
-import { Prisma } from '@prisma/client'
+import { Department } from '@prisma/client'
 import { faker } from '@faker-js/faker'
-import { randomUUID } from 'crypto'
+import { randomUUID } from 'node:crypto'
 
-interface DepartmentProps extends Prisma.DepartmentUncheckedCreateInput {}
-
-export function makeDepartment(
-  override: Partial<DepartmentProps> = {},
-): DepartmentProps {
+export function makeDepartment(override: Partial<Department> = {}): Department {
   return {
+    id: randomUUID(),
     name: faker.commerce.department(),
     description: faker.commerce.productDescription(),
     createdBy: randomUUID(),
+    createdAt: new Date(),
+    updatedAt: null,
+    updatedBy: null,
+    deletedAt: null,
+    deletedBy: null,
     ...override,
   }
 }

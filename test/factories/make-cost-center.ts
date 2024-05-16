@@ -1,18 +1,18 @@
-import { Prisma } from '@prisma/client'
+import { CostCenter } from '@prisma/client'
 import { faker } from '@faker-js/faker'
-import { randomUUID } from 'crypto'
+import { randomUUID } from 'node:crypto'
 import { CostCenterStatus } from '@/enums/cost-center'
 
-interface CostCenterProps extends Prisma.CostCenterUncheckedCreateInput {}
-
-export function makeCostCenter(
-  override: Partial<CostCenterProps> = {},
-): CostCenterProps {
+export function makeCostCenter(override: Partial<CostCenter> = {}): CostCenter {
   return {
+    id: randomUUID(),
     name: faker.commerce.department(),
     code: faker.commerce.isbn(),
     status: CostCenterStatus.ACTIVE,
     createdBy: randomUUID(),
+    createdAt: new Date(),
+    updatedAt: null,
+    updatedBy: null,
     ...override,
   }
 }
