@@ -33,11 +33,12 @@ model User {
 
   createdAt DateTime @default(now()) @map("created_at")
 
-  products     Product[]
-  warehouses   Warehouse[]
-  suppliers    Supplier[]
-  costCenters  CostCenter[]
-  requisitions Requisition[]
+  products      Product[]
+  warehouses    Warehouse[]
+  suppliers     Supplier[]
+  costCenters   CostCenter[]
+  requisitions  Requisition[]
+  productQuotes ProductQuote[]
 
   @@map("users")
 }
@@ -55,6 +56,7 @@ model Product {
 
   productMovements ProductMovement[]
   requisitions     Requisition[]
+  productQuotes    ProductQuote[]
 
   @@map("products")
 }
@@ -76,15 +78,16 @@ model Warehouse {
 }
 
 model Supplier {
-  id          String    @id @default(uuid())
-  name        String    @unique
-  description String
-  status      Int
-  createdAt   DateTime  @default(now()) @map("created_at")
-  createdBy   String    @map("created_by")
-  user        User      @relation(fields: [createdBy], references: [id])
-  updatedAt   DateTime? @default(now()) @map("updated_at")
-  updatedBy   String?   @map("updated_by")
+  id            String         @id @default(uuid())
+  name          String         @unique
+  description   String
+  status        Int
+  createdAt     DateTime       @default(now()) @map("created_at")
+  createdBy     String         @map("created_by")
+  user          User           @relation(fields: [createdBy], references: [id])
+  updatedAt     DateTime?      @default(now()) @map("updated_at")
+  updatedBy     String?        @map("updated_by")
+  productQuotes ProductQuote[]
 
   @@map("suppliers")
 }
@@ -131,4 +134,21 @@ model Requisition {
   user         User       @relation(fields: [createdBy], references: [id])
 
   @@map("requisitions")
+}
+
+model ProductQuote {
+  id             String   @id @default(uuid())
+  productId      String   @map("product_id")
+  product        Product  @relation(fields: [productId], references: [id])
+  supplierId     String   @map("supplier_id")
+  supplier       Supplier @relation(fields: [supplierId], references: [id])
+  price          Int
+  quoteDate      DateTime @map("quote_date")
+  buyerId        String   @map("buyer_id")
+  user           User     @relation(fields: [buyerId], references: [id])
+  expirationDate DateTime @map("expiration_date")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("product_quotes")
 }
