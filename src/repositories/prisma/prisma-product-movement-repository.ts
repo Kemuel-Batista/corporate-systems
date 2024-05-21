@@ -59,4 +59,20 @@ export class PrismaProductMovementRepository
 
     return productMovement
   }
+
+  async quantityByProductId(productId: string): Promise<number> {
+    const products = await prisma.productMovement.findMany({
+      where: {
+        productId,
+      },
+    })
+
+    let quantityByProduct = 0
+
+    for (const product of products) {
+      quantityByProduct += product.quantity
+    }
+
+    return quantityByProduct
+  }
 }

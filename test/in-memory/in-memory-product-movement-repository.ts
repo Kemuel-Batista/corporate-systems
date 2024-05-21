@@ -55,4 +55,16 @@ export class InMemoryProductMovementRepository
 
     return productMovement
   }
+
+  async quantityByProductId(productId: string): Promise<number> {
+    const products = this.items.filter((item) => item.productId === productId)
+
+    let quantityByProduct = 0
+
+    for (const product of products) {
+      quantityByProduct += product.quantity
+    }
+
+    return quantityByProduct
+  }
 }

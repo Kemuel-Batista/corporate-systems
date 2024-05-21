@@ -33,10 +33,11 @@ model User {
 
   createdAt DateTime @default(now()) @map("created_at")
 
-  products    Product[]
-  warehouses  Warehouse[]
-  suppliers   Supplier[]
-  costCenters CostCenter[]
+  products     Product[]
+  warehouses   Warehouse[]
+  suppliers    Supplier[]
+  costCenters  CostCenter[]
+  requisitions Requisition[]
 
   @@map("users")
 }
@@ -53,6 +54,7 @@ model Product {
   updatedBy   String?   @map("updated_by")
 
   productMovements ProductMovement[]
+  requisitions     Requisition[]
 
   @@map("products")
 }
@@ -88,15 +90,16 @@ model Supplier {
 }
 
 model CostCenter {
-  id        String    @id @default(uuid())
-  code      String    @unique
-  name      String
-  status    Int
-  createdAt DateTime  @default(now()) @map("created_at")
-  createdBy String    @map("created_by")
-  user      User      @relation(fields: [createdBy], references: [id])
-  updatedAt DateTime? @default(now()) @map("updated_at")
-  updatedBy String?   @map("updated_by")
+  id           String        @id @default(uuid())
+  code         String        @unique
+  name         String
+  status       Int
+  createdAt    DateTime      @default(now()) @map("created_at")
+  createdBy    String        @map("created_by")
+  user         User          @relation(fields: [createdBy], references: [id])
+  updatedAt    DateTime?     @default(now()) @map("updated_at")
+  updatedBy    String?       @map("updated_by")
+  requisitions Requisition[]
 
   @@map("costcenters")
 }
@@ -113,4 +116,19 @@ model ProductMovement {
   createdAt    DateTime  @default(now()) @map("created_at")
 
   @@map("productsmovement")
+}
+
+model Requisition {
+  id           String     @id @default(uuid())
+  productId    String     @map("product_id")
+  product      Product    @relation(fields: [productId], references: [id])
+  quantity     Int
+  status       Int
+  costCenterId String     @map("cost_center_id")
+  costCenter   CostCenter @relation(fields: [costCenterId], references: [id])
+  createdAt    DateTime   @default(now()) @map("created_at")
+  createdBy    String     @map("created_by")
+  user         User       @relation(fields: [createdBy], references: [id])
+
+  @@map("requisitions")
 }

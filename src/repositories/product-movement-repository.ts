@@ -7,4 +7,5 @@ export interface ProductMovementRepository {
   listByProductId(productId: string): Promise<ProductMovement[]>
   listByWarehouseId(warehouseId: string): Promise<ProductMovement[]>
   listByDate(initialDate: Date, finalDate: Date): Promise<ProductMovement[]>
+  quantityByProductId(productId: string): Promise<number>
 }

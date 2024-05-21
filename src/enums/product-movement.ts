@@ -8,4 +8,5 @@ export enum MovementType {
   EXIT_BY_ASSISTANCE = 22,
   EXIT_BY_TRANSFER = 23,
   EXIT_BY_RETURN = 24,
+  EXIT_BY_REQUISITION = 25,
 }
