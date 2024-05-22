@@ -39,6 +39,7 @@ model User {
   costCenters   CostCenter[]
   requisitions  Requisition[]
   productQuotes ProductQuote[]
+  purchases     Purchase[]
 
   @@map("users")
 }
@@ -57,6 +58,7 @@ model Product {
   productMovements ProductMovement[]
   requisitions     Requisition[]
   productQuotes    ProductQuote[]
+  purchases        Purchase[]
 
   @@map("products")
 }
@@ -88,6 +90,7 @@ model Supplier {
   updatedAt     DateTime?      @default(now()) @map("updated_at")
   updatedBy     String?        @map("updated_by")
   productQuotes ProductQuote[]
+  purchases     Purchase[]
 
   @@map("suppliers")
 }
@@ -148,7 +151,29 @@ model ProductQuote {
   user           User     @relation(fields: [buyerId], references: [id])
   expirationDate DateTime @map("expiration_date")
 
-  createdAt DateTime @default(now()) @map("created_at")
+  createdAt DateTime   @default(now()) @map("created_at")
+  purchases Purchase[]
 
   @@map("product_quotes")
+}
+
+model Purchase {
+  id             String       @id @default(uuid())
+  supplierId     String       @map("supplier_id")
+  supplier       Supplier     @relation(fields: [supplierId], references: [id])
+  productId      String       @map("product_id")
+  product        Product      @relation(fields: [productId], references: [id])
+  productQuoteId String       @map("product_quote_id")
+  productQuote   ProductQuote @relation(fields: [productQuoteId], references: [id])
+  buyerId        String       @map("buyer_id")
+  user           User         @relation(fields: [buyerId], references: [id])
+  quantity       Int
+  unitCost       Int          @map("unit_cost")
+  status         Int
+  quotes         Int
+  invoiceNumber  String       @map("invoice_number")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("purchases")
 }

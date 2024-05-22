@@ -26,6 +26,16 @@ export class InMemoryProductQuotesRepository
     return productQuote
   }
 
+  async findById(id: string): Promise<ProductQuote | null> {
+    const productQuote = this.items.find((item) => item.id === id)
+
+    if (!productQuote) {
+      return null
+    }
+
+    return productQuote
+  }
+
   async listByProductId(productId: string): Promise<ProductQuote[]> {
     const productQuotes = this.items
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())

@@ -24,6 +24,16 @@ export class PrismaProductQuotesRepository implements ProductQuotesRepository {
     return productQuote
   }
 
+  async findById(id: string): Promise<ProductQuote | null> {
+    const productQuote = await prisma.productQuote.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    return productQuote
+  }
+
   async listByProductId(productId: string): Promise<ProductQuote[]> {
     const productQuotes = await prisma.productQuote.findMany({
       where: {
