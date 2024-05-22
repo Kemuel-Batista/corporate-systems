@@ -1,6 +1,7 @@
 import { Prisma, ProductMovement } from '@prisma/client'
 import { ProductMovementRepository } from '../product-movement-repository'
 import { prisma } from '@/lib/prisma'
+import { MovementType } from '@/enums/product-movement'
 
 export class PrismaProductMovementRepository
   implements ProductMovementRepository
@@ -61,17 +62,38 @@ export class PrismaProductMovementRepository
   }
 
   async quantityByProductId(productId: string): Promise<number> {
-    const products = await prisma.productMovement.findMany({
+    const entryProducts = await prisma.productMovement.findMany({
       where: {
         productId,
+        movementType: {
+          gte: MovementType.ENTRY_BY_PURCHASE,
+          lt: MovementType.EXIT_BY_SALE,
+        },
       },
     })
 
-    let quantityByProduct = 0
+    const exitProducts = await prisma.productMovement.findMany({
+      where: {
+        productId,
+        movementType: {
+          gte: MovementType.EXIT_BY_SALE,
+        },
+      },
+    })
 
-    for (const product of products) {
-      quantityByProduct += product.quantity
+    let entryProductsQtd = 0
+
+    for (const product of entryProducts) {
+      entryProductsQtd += product.quantity
     }
+
+    let exitProductsQtd = 0
+
+    for (const product of exitProducts) {
+      exitProductsQtd += product.quantity
+    }
+
+    const quantityByProduct = entryProductsQtd - exitProductsQtd
 
     return quantityByProduct
   }

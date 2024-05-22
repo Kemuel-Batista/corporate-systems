@@ -29,4 +29,27 @@ export class PrismaPurchasesRepository implements PurchasesRepository {
     })
     return purchase
   }
+
+  async update({ id, status }: Purchase): Promise<Purchase> {
+    const purchase = await prisma.purchase.update({
+      where: {
+        id,
+      },
+      data: {
+        status: status ?? undefined,
+      },
+    })
+
+    return purchase
+  }
+
+  async findById(id: string): Promise<Purchase | null> {
+    const purchase = await prisma.purchase.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    return purchase
+  }
 }

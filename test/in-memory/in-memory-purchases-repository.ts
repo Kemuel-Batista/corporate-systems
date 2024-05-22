@@ -24,4 +24,29 @@ export class InMemoryPurchasesRepository implements PurchasesRepository {
 
     return purchase
   }
+
+  async update(data: Purchase): Promise<Purchase> {
+    const itemIndex = this.items.findIndex((item) => item.id === data.id)
+
+    const purchase = this.items[itemIndex]
+
+    const purchaseUpdated = {
+      ...purchase,
+      status: data.status,
+    }
+
+    this.items[itemIndex] = purchaseUpdated
+
+    return purchase
+  }
+
+  async findById(id: string): Promise<Purchase | null> {
+    const purchase = this.items.find((item) => item.id === id)
+
+    if (!purchase) {
+      return null
+    }
+
+    return purchase
+  }
 }

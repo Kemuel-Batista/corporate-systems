@@ -8,6 +8,7 @@ import { ProductMovementRepository } from '@/repositories/product-movement-repos
 import { ProductsRepository } from '@/repositories/products-repository'
 import { RequisitionsRepository } from '@/repositories/requisitions-repository'
 import { UsersRepository } from '@/repositories/users-repository'
+import { WarehousesRepository } from '@/repositories/warehouses-repository'
 import { Requisition } from '@prisma/client'
 
 interface CreateRequisitionUseCaseRequest {
@@ -15,6 +16,7 @@ interface CreateRequisitionUseCaseRequest {
   productId: string
   quantity: number
   requestedBy: string
+  warehouseId?: string
 }
 
 type CreateRequisitionUseCaseResponse = Either<
@@ -31,6 +33,7 @@ export class CreateRequisitionUseCase {
     private productsRepository: ProductsRepository,
     private usersRepository: UsersRepository,
     private productMovementRepository: ProductMovementRepository,
+    private warehousesRepository: WarehousesRepository,
   ) {}
 
   async execute({
@@ -38,6 +41,7 @@ export class CreateRequisitionUseCase {
     productId,
     quantity,
     requestedBy,
+    warehouseId,
   }: CreateRequisitionUseCaseRequest): Promise<CreateRequisitionUseCaseResponse> {
     const costCenter = await this.costcentersRepository.findById(costCenterId)
 
@@ -62,6 +66,12 @@ export class CreateRequisitionUseCase {
 
     if (quantityByProduct < quantity) {
       return failure(new QuantityRequestedDoesNotExistsError())
+    }
+
+    const warehouse = await this.warehousesRepository.findById(warehouseId)
+
+    if (!warehouse) {
+      return failure(new ResourceNotFoundError())
     }
 
     // Processar requisição e produto ser atendido

@@ -10,12 +10,15 @@ import { makeUser } from 'test/factories/make-user'
 import { makeProductMovement } from 'test/factories/make-product-movement'
 import { MovementType } from '@/enums/product-movement'
 import { QuantityRequestedDoesNotExistsError } from '@/core/errors/quantity-requested-does-not-exists-error'
+import { InMemoryWarehousesRepository } from 'test/in-memory/in-memory-warehouses-repository'
+import { makeWarehouse } from 'test/factories/make-warehouse'
 
 let inMemoryRequisitionsRepository: InMemoryRequisitionsRepository
 let inMemoryCostcentersRepository: InMemoryCostCentersRepository
 let inMemoryProductsRepository: InMemoryProductsRepository
 let inMemoryUsersRepository: InMemoryUsersRepository
 let inMemoryProductMovementRepository: InMemoryProductMovementRepository
+let inMemoryWarehousesRepository: InMemoryWarehousesRepository
 
 let sut: CreateRequisitionUseCase
 
@@ -26,6 +29,7 @@ describe('Create requisition', () => {
     inMemoryProductsRepository = new InMemoryProductsRepository()
     inMemoryUsersRepository = new InMemoryUsersRepository()
     inMemoryProductMovementRepository = new InMemoryProductMovementRepository()
+    inMemoryWarehousesRepository = new InMemoryWarehousesRepository()
 
     sut = new CreateRequisitionUseCase(
       inMemoryRequisitionsRepository,
@@ -33,6 +37,7 @@ describe('Create requisition', () => {
       inMemoryProductsRepository,
       inMemoryUsersRepository,
       inMemoryProductMovementRepository,
+      inMemoryWarehousesRepository,
     )
   })
 
@@ -53,11 +58,16 @@ describe('Create requisition', () => {
     })
     await inMemoryProductMovementRepository.create(productMovementFactory)
 
+    const warehouseFactory = makeWarehouse()
+    const warehouse =
+      await inMemoryWarehousesRepository.create(warehouseFactory)
+
     const result = await sut.execute({
       costCenterId: costCenter.id,
       productId: product.id,
       quantity: 20,
       requestedBy: user.id,
+      warehouseId: warehouse.id,
     })
 
     expect(result.isSuccess()).toBe(true)

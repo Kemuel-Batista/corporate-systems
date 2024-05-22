@@ -4,6 +4,7 @@ import { CreateRequisitionUseCase } from '../create-requisition'
 import { PrismaCostCentersRepository } from '@/repositories/prisma/prisma-cost-centers-repository'
 import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users-repository'
 import { PrismaProductMovementRepository } from '@/repositories/prisma/prisma-product-movement-repository'
+import { PrismaWarehousesRepository } from '@/repositories/prisma/prisma-warehouses-repository'
 
 export function makeCreateRequisitionUseCase() {
   const requisitionsRepository = new PrismaRequisitionsRepository()
@@ -11,6 +12,7 @@ export function makeCreateRequisitionUseCase() {
   const usersRepository = new PrismaUsersRepository()
   const productsRepository = new PrismaProductsRepository()
   const productMovementRepository = new PrismaProductMovementRepository()
+  const warehousesRepository = new PrismaWarehousesRepository()
 
   const createRequisitionUseCase = new CreateRequisitionUseCase(
     requisitionsRepository,
@@ -18,6 +20,7 @@ export function makeCreateRequisitionUseCase() {
     productsRepository,
     usersRepository,
     productMovementRepository,
+    warehousesRepository,
   )
 
   return createRequisitionUseCase

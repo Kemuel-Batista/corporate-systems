@@ -1,3 +1,4 @@
+import { MovementType } from '@/enums/product-movement'
 import { ProductMovementRepository } from '@/repositories/product-movement-repository'
 import { Prisma, ProductMovement } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
@@ -57,13 +58,26 @@ export class InMemoryProductMovementRepository
   }
 
   async quantityByProductId(productId: string): Promise<number> {
-    const products = this.items.filter((item) => item.productId === productId)
+    const entryProductsQtd = this.items
+      .filter(
+        (item) =>
+          item.productId === productId &&
+          item.movementType >= MovementType.ENTRY_BY_PURCHASE &&
+          item.movementType < MovementType.EXIT_BY_SALE,
+      )
+      .map((item) => item.quantity)
+      .reduce((total, quantity) => total + quantity, 0)
 
-    let quantityByProduct = 0
+    const exitProductsQtd = this.items
+      .filter(
+        (item) =>
+          item.productId === productId &&
+          item.movementType >= MovementType.EXIT_BY_SALE,
+      )
+      .map((item) => item.quantity)
+      .reduce((total, quantity) => total + quantity, 0)
 
-    for (const product of products) {
-      quantityByProduct += product.quantity
-    }
+    const quantityByProduct = entryProductsQtd - exitProductsQtd
 
     return quantityByProduct
   }
