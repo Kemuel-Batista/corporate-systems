@@ -4,6 +4,8 @@ import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users-reposi
 import { PrismaProductsRepository } from '@/repositories/prisma/prisma-products-repository'
 import { PrismaProductQuotesRepository } from '@/repositories/prisma/prisma-product-quotes-repository'
 import { PrismaSuppliersRepository } from '@/repositories/prisma/prisma-suppliers-repository'
+import { PrismaFinancialSecuritiesRepository } from '@/repositories/prisma/prisma-financial-securities-repository'
+import { PrismaAccountPayableMovementsRepository } from '@/repositories/prisma/prisma-account-payable-movements-repository'
 
 export function makeCreatePurchaseUseCase() {
   const purchasesRepository = new PrismaPurchasesRepository()
@@ -11,6 +13,10 @@ export function makeCreatePurchaseUseCase() {
   const productsRepository = new PrismaProductsRepository()
   const productQuotesRepository = new PrismaProductQuotesRepository()
   const suppliersRepository = new PrismaSuppliersRepository()
+  const financialSecuritiesRepository =
+    new PrismaFinancialSecuritiesRepository()
+  const accountPayableMovementsRepository =
+    new PrismaAccountPayableMovementsRepository()
 
   const createPurchaseUseCase = new CreatePurchaseUseCase(
     purchasesRepository,
@@ -18,6 +24,8 @@ export function makeCreatePurchaseUseCase() {
     productsRepository,
     productQuotesRepository,
     suppliersRepository,
+    financialSecuritiesRepository,
+    accountPayableMovementsRepository,
   )
 
   return createPurchaseUseCase
