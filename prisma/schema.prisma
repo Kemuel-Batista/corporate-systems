@@ -209,3 +209,12 @@ model AccountPayableMovement {
 
   @@map("account_payable_movements")
 }
+
+model Client {
+  id        String   @id @default(uuid())
+  cpf       String   @unique
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("clients")
+}
