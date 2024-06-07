@@ -40,6 +40,7 @@ model User {
   requisitions  Requisition[]
   productQuotes ProductQuote[]
   purchases     Purchase[]
+  sales         Sale[]
 
   @@map("users")
 }
@@ -59,6 +60,7 @@ model Product {
   requisitions     Requisition[]
   productQuotes    ProductQuote[]
   purchases        Purchase[]
+  saleDetails      SaleDetails[]
 
   @@map("products")
 }
@@ -216,5 +218,33 @@ model Client {
   name      String
   createdAt DateTime @default(now()) @map("created_at")
 
+  sales Sale[]
+
   @@map("clients")
+}
+
+model Sale {
+  id            String        @id @default(uuid())
+  clientId      String        @map("client_id")
+  client        Client        @relation(fields: [clientId], references: [id])
+  invoiceNumber String        @map("invoice_number")
+  saleDate      DateTime      @map("sale_date")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  createdBy     String
+  user          User          @relation(fields: [createdBy], references: [id])
+  saleDetails   SaleDetails[]
+
+  @@map("sales")
+}
+
+model SaleDetails {
+  id         String  @id @default(uuid())
+  saleId     String  @map("sale_id")
+  sale       Sale    @relation(fields: [saleId], references: [id])
+  productId  String  @map("product_id")
+  product    Product @relation(fields: [productId], references: [id])
+  soldAmount Int     @map("sold_amount")
+  unitPrice  Int     @map("unit_price")
+
+  @@map("sale_details")
 }
