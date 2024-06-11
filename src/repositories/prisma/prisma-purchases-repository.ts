@@ -52,4 +52,10 @@ export class PrismaPurchasesRepository implements PurchasesRepository {
 
     return purchase
   }
+
+  async list(): Promise<Purchase[]> {
+    const purchases = await prisma.purchase.findMany()
+
+    return purchases
+  }
 }

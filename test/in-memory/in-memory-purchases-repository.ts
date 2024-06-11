@@ -49,4 +49,12 @@ export class InMemoryPurchasesRepository implements PurchasesRepository {
 
     return purchase
   }
+
+  async list(): Promise<Purchase[]> {
+    const purchases = this.items.sort(
+      (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+    )
+
+    return purchases
+  }
 }
