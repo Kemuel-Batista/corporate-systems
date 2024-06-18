@@ -11,6 +11,8 @@ import { productMovementRoutes } from './http/controllers/product-movements/rout
 import { requistionRoutes } from './http/controllers/requisitions/routes'
 import { productQuoteRoutes } from './http/controllers/product-quotes/routes'
 import { purchaseRoutes } from './http/controllers/purchases/routes'
+import { clientRoutes } from './http/controllers/clients/routes'
+import { saleRoutes } from './http/controllers/sales/routes'
 
 const router = Router()
 
@@ -27,5 +29,7 @@ router.use('/product-movement', productMovementRoutes)
 router.use('/requisitions', requistionRoutes)
 router.use('/product-quotes', productQuoteRoutes)
 router.use('/purchases', purchaseRoutes)
+router.use('/clients', clientRoutes)
+router.use('/sales', saleRoutes)
 
 export { router }

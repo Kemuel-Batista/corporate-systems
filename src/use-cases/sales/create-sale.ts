@@ -13,9 +13,9 @@ interface CreateSaleUseCaseRequest {
   saleDate: Date
   createdBy: string
   saleDetails: {
-    productId: string
-    soldAmount: number
-    unitPrice: number
+    productId?: string
+    soldAmount?: number
+    unitPrice?: number
   }[]
 }
 
