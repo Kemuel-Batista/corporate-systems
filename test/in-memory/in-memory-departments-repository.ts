@@ -35,6 +35,7 @@ export class InMemoryDepartmentsRepository implements DepartmentsRepository {
       name: data.name,
       description: data.description,
       updatedBy: data.updatedBy,
+      updatedAt: new Date(),
     }
 
     this.items[itemIndex] = departmentUpdated
@@ -63,16 +64,24 @@ export class InMemoryDepartmentsRepository implements DepartmentsRepository {
   }
 
   async list(): Promise<Department[]> {
-    const departments = this.items.sort(
-      (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
-    )
+    const departments = this.items
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+      .filter((item) => item.deletedAt === null)
 
     return departments
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string, deletedBy: string): Promise<void> {
     const itemIndex = this.items.findIndex((item) => item.id === id)
 
-    this.items.splice(itemIndex, 1)
+    const department = this.items[itemIndex]
+
+    const departmentUpdated = {
+      ...department,
+      deletedBy,
+      deletedAt: new Date(),
+    }
+
+    this.items[itemIndex] = departmentUpdated
   }
 }

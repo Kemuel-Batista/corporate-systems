@@ -31,6 +31,7 @@ export class PrismaDepartmentsRepository implements DepartmentsRepository {
       data: {
         name: name ?? undefined,
         description: description ?? undefined,
+        updatedAt: new Date(),
         updatedBy,
       },
     })
@@ -68,10 +69,14 @@ export class PrismaDepartmentsRepository implements DepartmentsRepository {
     return departments
   }
 
-  async delete(id: string): Promise<void> {
-    await prisma.department.delete({
+  async delete(id: string, deletedBy: string): Promise<void> {
+    await prisma.department.update({
       where: {
         id,
+      },
+      data: {
+        deletedAt: new Date(),
+        deletedBy,
       },
     })
   }

@@ -12,7 +12,9 @@ const registerBodySchema = z.object({
 
 export class RegisterController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { name, email, password, departmentId } = registerBodySchema.parse(request.body)
+    const { name, email, password, departmentId } = registerBodySchema.parse(
+      request.body,
+    )
 
     try {
       const registerUseCase = makeRegisterUseCase()

@@ -5,8 +5,12 @@
   "scripts": {
     "start:dev": "tsx watch src/server.ts",
     "start": "node build/server.js",
+    "seed": "npx prisma db seed",
     "test": "vitest run --dir src/use-cases",
     "test:watch": "vitest --dir src/use-cases"
+  },
+  "prisma": {
+    "seed": "ts-node -r tsconfig-paths/register prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +33,7 @@
     "@types/node": "^20.12.12",
     "eslint": "^8.57.0",
     "prisma": "^5.14.0",
+    "ts-node": "^10.9.2",
     "tsup": "^8.0.2",
     "tsx": "^4.10.2",
     "typescript": "^5.4.5",

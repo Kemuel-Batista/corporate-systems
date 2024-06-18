@@ -6,5 +6,5 @@ export interface DepartmentsRepository {
   findById(id: string): Promise<Department | null>
   findByName(name: string): Promise<Department | null>
   list(): Promise<Department[]>
-  delete(id: string): Promise<void>
+  delete(id: string, deletedBy: string): Promise<void>
 }

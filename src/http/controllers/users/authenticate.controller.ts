@@ -3,6 +3,7 @@ import { makeAuthenticateUseCase } from '@/use-cases/users/factories/make-authen
 import { Request, Response } from 'express'
 import { z } from 'zod'
 import { sign } from 'jsonwebtoken'
+import { env } from '@/env'
 
 const authenticateBodySchema = z.object({
   email: z.string().email(),
@@ -18,7 +19,7 @@ export class AuthenticateController {
 
       const { user } = await authenticateUseCase.execute({ email, password })
 
-      const token = sign({ id: user.id }, `${process.env.SECRET_JWT}`, {
+      const token = sign({ id: user.id }, env.SECRET_JWT, {
         expiresIn: '2h',
       })
 
