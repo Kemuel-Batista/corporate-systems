@@ -1,29 +1,28 @@
-import { makeCreateProductMovementUseCase } from '@/use-cases/product-movement/factories/make-create-product-movement'
+import { makeCreateRequisitionUseCase } from '@/use-cases/requisitions/factories/make-create-requisition'
 import { ResourceAlreadyExistsError } from '@/core/errors/resource-already-exists-error'
 import { Request, Response } from 'express'
 import { z } from 'zod'
 
-const createProductMovementBodySchema = z.object({
+const createRequisitionBodySchema = z.object({
+  costCenterId: z.string().uuid(),
   productId: z.string().uuid(),
   warehouseId: z.string().uuid(),
-  movementType: z.number().int().positive(),
   quantity: z.number().int().positive(),
-  value: z.number().int().positive(),
 })
 
-export class CreateProductMovementController {
+export class CreateRequisitionController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { productId, warehouseId, movementType, quantity, value } =
-      createProductMovementBodySchema.parse(request.body)
+    const { costCenterId, productId, warehouseId, quantity } =
+      createRequisitionBodySchema.parse(request.body)
 
-    const createProductMovementUseCase = makeCreateProductMovementUseCase()
+    const createRequisitionUseCase = makeCreateRequisitionUseCase()
 
-    const result = await createProductMovementUseCase.execute({
+    const result = await createRequisitionUseCase.execute({
+      costCenterId,
       productId,
       warehouseId,
-      movementType,
       quantity,
-      value,
+      requestedBy: request.user.sub,
     })
 
     if (result.isError()) {

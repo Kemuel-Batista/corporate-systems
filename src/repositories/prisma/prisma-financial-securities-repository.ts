@@ -26,6 +26,30 @@ export class PrismaFinancialSecuritiesRepository
     return financialSecurity
   }
 
+  async update({
+    id,
+    situation,
+    invoiceNumber,
+    dueDate,
+    originalValue,
+    purchaseId,
+    quota,
+  }: FinancialSecurity): Promise<void> {
+    await prisma.financialSecurity.update({
+      where: {
+        id,
+      },
+      data: {
+        situation: situation ?? undefined,
+        invoiceNumber: invoiceNumber ?? undefined,
+        dueDate: dueDate ?? undefined,
+        originalValue: originalValue ?? undefined,
+        purchaseId: purchaseId ?? undefined,
+        quota: quota ?? undefined,
+      },
+    })
+  }
+
   async findById(id: string): Promise<FinancialSecurity | null> {
     const financialSecurity = await prisma.financialSecurity.findUnique({
       where: {

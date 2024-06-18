@@ -1,23 +1,20 @@
-import { makeCreateDepartmentUseCase } from '@/use-cases/departments/factories/make-create-department'
+import { makeCancelRequisitionUseCase } from '@/use-cases/requisitions/factories/make-cancel-requisition'
 import { ResourceAlreadyExistsError } from '@/core/errors/resource-already-exists-error'
 import { Request, Response } from 'express'
 import { z } from 'zod'
 
-const createDepartmentBodySchema = z.object({
-  name: z.string(),
-  description: z.string(),
+const cancelRequisitionBodySchema = z.object({
+  id: z.string().uuid(),
 })
 
-export class CreateDepartmentController {
+export class CancelRequisitionController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { name, description } = createDepartmentBodySchema.parse(request.body)
+    const { id } = cancelRequisitionBodySchema.parse(request.params)
 
-    const createDepartmentUseCase = makeCreateDepartmentUseCase()
+    const cancelRequisitionUseCase = makeCancelRequisitionUseCase()
 
-    const result = await createDepartmentUseCase.execute({
-      name,
-      description,
-      createdBy: request.user.sub,
+    const result = await cancelRequisitionUseCase.execute({
+      id,
     })
 
     if (result.isError()) {
@@ -35,6 +32,6 @@ export class CreateDepartmentController {
       }
     }
 
-    return response.status(201).send()
+    return response.status(204).send()
   }
 }

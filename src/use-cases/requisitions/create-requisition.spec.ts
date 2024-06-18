@@ -100,6 +100,10 @@ describe('Create requisition', () => {
     const costCenter =
       await inMemoryCostcentersRepository.create(costCenterFactory)
 
+    const warehouseFactory = makeWarehouse()
+    const warehouse =
+      await inMemoryWarehousesRepository.create(warehouseFactory)
+
     const productFactory = makeProduct()
     const product = await inMemoryProductsRepository.create(productFactory)
 
@@ -117,6 +121,7 @@ describe('Create requisition', () => {
       productId: product.id,
       quantity: 20,
       requestedBy: user.id,
+      warehouseId: warehouse.id,
     })
 
     expect(result.isError()).toBe(true)

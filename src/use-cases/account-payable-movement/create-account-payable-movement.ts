@@ -1,5 +1,6 @@
 import { Either, failure, success } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
+import { FinancialSecuritySituation } from '@/enums/financial-security'
 import { AccountPayableMovementsRepository } from '@/repositories/account-payable-movements-repository'
 import { FinancialSecuritiesRepository } from '@/repositories/financial-securities-repository'
 
@@ -40,6 +41,12 @@ export class CreateAccountPayableMovementUseCase {
       movementType,
       movementValue,
     })
+
+    if (movementValue === financialSecurity.originalValue) {
+      financialSecurity.situation = FinancialSecuritySituation.COMPLETED
+    }
+
+    await this.financialSecuritiesRepository.update(financialSecurity)
 
     return success(null)
   }

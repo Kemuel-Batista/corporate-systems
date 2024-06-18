@@ -16,7 +16,7 @@ interface CreateRequisitionUseCaseRequest {
   productId: string
   quantity: number
   requestedBy: string
-  warehouseId?: string
+  warehouseId: string
 }
 
 type CreateRequisitionUseCaseResponse = Either<
@@ -86,7 +86,7 @@ export class CreateRequisitionUseCase {
     await this.productMovementRepository.create({
       movementType: MovementType.EXIT_BY_REQUISITION,
       productId,
-      warehouseId: '', // TODO: para onde sair?
+      warehouseId,
       quantity,
       value: 0,
       createdAt: new Date(),

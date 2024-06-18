@@ -39,6 +39,6 @@ export class CreateWarehouseController {
       }
     }
 
-    return response.status(201).json(result.value)
+    return response.status(201).send()
   }
 }

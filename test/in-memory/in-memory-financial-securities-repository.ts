@@ -26,6 +26,24 @@ export class InMemoryFinancialSecuritiesRepository
     return financialSecurity
   }
 
+  async update(data: FinancialSecurity): Promise<void> {
+    const itemIndex = this.items.findIndex((item) => item.id === data.id)
+
+    const financialSecurity = this.items[itemIndex]
+
+    const financialSecurityUpdated = {
+      ...financialSecurity,
+      situation: data.situation,
+      invoiceNumber: data.invoiceNumber,
+      dueDate: data.dueDate,
+      originalValue: data.originalValue,
+      purchaseId: data.purchaseId,
+      quota: data.quota,
+    }
+
+    this.items[itemIndex] = financialSecurityUpdated
+  }
+
   async findById(id: string): Promise<FinancialSecurity | null> {
     const financialSecurity = this.items.find((item) => item.id === id)
 
