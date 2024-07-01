@@ -1,51 +1,26 @@
+import { CostCenterStatus } from '@/enums/cost-center'
+import { ProductStatus } from '@/enums/product'
+import { SupplierStatus } from '@/enums/supplier'
+import { WarehouseStatus } from '@/enums/warehouse'
 import { prisma } from '@/lib/prisma'
+import { Department, User } from '@prisma/client'
+import { hash } from 'bcryptjs'
 import { randomUUID } from 'node:crypto'
 
 async function main(): Promise<void> {
-  const enviroment = process.env.NODE_ENV
-  console.log('NODE_ENV', enviroment)
-
-  if (!enviroment || enviroment === 'development' || enviroment === null) {
-    console.log('Running Dev Seed....')
-    await seedDev()
-    console.log('Finished Dev Seed....')
-  } else if (enviroment === 'deploy') {
-    console.log('Running Deploy Seed....')
-    await seedDeploy()
-    console.log('Finished Deploy Seed....')
-  } else if (enviroment === 'test') {
-    console.log('Running Test Seed....')
-    await seedTest()
-    console.log('Finished Test Seed....')
-  } else if (enviroment === 'production') {
-    console.log('Running Production Seed....')
-    await seedProduction()
-    console.log('Finished Production Seed....')
-  }
-}
-
-async function seedProduction(): Promise<void> {}
-
-async function seedDeploy(): Promise<void> {
   await cleanDatabase()
 
-  await createDepartments()
+  const department = await createDepartments()
+  const user = await createUser(department)
+  await createWarehouses(user)
+  await createProducts(user)
+  await createSuppliers(user)
+  await createCostCenters(user)
+  await createClients()
 }
 
-async function seedTest(): Promise<void> {
-  await cleanDatabase()
-
-  await createDepartments()
-}
-
-async function seedDev(): Promise<void> {
-  await cleanDatabase()
-
-  await createDepartments()
-}
-
-async function createDepartments(): Promise<void> {
-  await prisma.department.upsert({
+async function createDepartments(): Promise<Department> {
+  const department = await prisma.department.upsert({
     where: {
       name: 'Vendas',
     },
@@ -53,6 +28,163 @@ async function createDepartments(): Promise<void> {
       name: 'Vendas',
       description: 'Equipe de vendas',
       createdBy: randomUUID(),
+    },
+    update: {},
+  })
+
+  return department
+}
+
+async function createUser(department: Department): Promise<User> {
+  const hashedPassword = await hash('01021993', 6)
+
+  const user = await prisma.user.upsert({
+    where: {
+      email: 'kemuellima20@gmail.com',
+    },
+    create: {
+      email: 'kemuellima20@gmail.com',
+      name: 'Kemuel',
+      departmentId: department.id,
+      passwordHash: hashedPassword,
+    },
+    update: {},
+  })
+
+  return user
+}
+
+async function createWarehouses(user: User): Promise<void> {
+  await prisma.warehouse.upsert({
+    where: {
+      name: 'Warehouse-01',
+    },
+    create: {
+      name: 'Warehouse-01',
+      description: 'Warehouse 01',
+      status: WarehouseStatus.ACTIVE,
+      createdBy: user.id,
+    },
+    update: {},
+  })
+
+  await prisma.warehouse.upsert({
+    where: {
+      name: 'Warehouse-02',
+    },
+    create: {
+      name: 'Warehouse-02',
+      description: 'Warehouse 02',
+      status: WarehouseStatus.ACTIVE,
+      createdBy: user.id,
+    },
+    update: {},
+  })
+}
+
+async function createProducts(user: User): Promise<void> {
+  await prisma.product.upsert({
+    where: {
+      name: 'Product-01',
+    },
+    create: {
+      name: 'Product-01',
+      description: 'Product 01',
+      status: ProductStatus.ACTIVE,
+      createdBy: user.id,
+    },
+    update: {},
+  })
+
+  await prisma.product.upsert({
+    where: {
+      name: 'Product-02',
+    },
+    create: {
+      name: 'Product-02',
+      description: 'Product 02',
+      status: ProductStatus.ACTIVE,
+      createdBy: user.id,
+    },
+    update: {},
+  })
+}
+
+async function createSuppliers(user: User): Promise<void> {
+  await prisma.product.upsert({
+    where: {
+      name: 'Supplier-01',
+    },
+    create: {
+      name: 'Supplier-01',
+      description: 'Supplier 01',
+      status: SupplierStatus.ACTIVE,
+      createdBy: user.id,
+    },
+    update: {},
+  })
+
+  await prisma.product.upsert({
+    where: {
+      name: 'Supplier-02',
+    },
+    create: {
+      name: 'Supplier-02',
+      description: 'Supplier 02',
+      status: SupplierStatus.ACTIVE,
+      createdBy: user.id,
+    },
+    update: {},
+  })
+}
+
+async function createCostCenters(user: User): Promise<void> {
+  await prisma.product.upsert({
+    where: {
+      name: 'Cost-Center-01',
+    },
+    create: {
+      name: 'Cost-Center-01',
+      description: 'Cost-Center 01',
+      status: CostCenterStatus.ACTIVE,
+      createdBy: user.id,
+    },
+    update: {},
+  })
+
+  await prisma.product.upsert({
+    where: {
+      name: 'Cost-Center-02',
+    },
+    create: {
+      name: 'Cost-Center-02',
+      description: 'Cost-Center 02',
+      status: CostCenterStatus.ACTIVE,
+      createdBy: user.id,
+    },
+    update: {},
+  })
+}
+
+async function createClients(): Promise<void> {
+  await prisma.client.upsert({
+    where: {
+      cpf: '12345678912',
+    },
+    create: {
+      cpf: '12345678912',
+      name: 'Kemuel',
+    },
+    update: {},
+  })
+
+  await prisma.client.upsert({
+    where: {
+      cpf: '12345678911',
+    },
+    create: {
+      cpf: '12345678911',
+      name: 'Kemuel',
     },
     update: {},
   })

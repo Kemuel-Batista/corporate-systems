@@ -22,7 +22,7 @@ financialSecurityRoutes.get(
   listFinancialSecurityBySaleIdController.handle,
 )
 
-financialSecurityRoutes.get(
+financialSecurityRoutes.delete(
   '/cancel/:id',
   cancelFinancialSecurityController.handle,
 )

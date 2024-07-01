@@ -15,6 +15,7 @@ import { clientRoutes } from './http/controllers/clients/routes'
 import { saleRoutes } from './http/controllers/sales/routes'
 import { accountReceivableMovementRoutes } from './http/controllers/account-receivable-movement/routes'
 import { accountPayableMovementRoutes } from './http/controllers/account-payable-movement/routes'
+import { financialSecurityRoutes } from './http/controllers/financial-security/routes'
 
 const router = Router()
 
@@ -33,6 +34,7 @@ router.use('/product-quotes', productQuoteRoutes)
 router.use('/purchases', purchaseRoutes)
 router.use('/clients', clientRoutes)
 router.use('/sales', saleRoutes)
+router.use('/financial-securities', financialSecurityRoutes)
 router.use('/account-payable', accountPayableMovementRoutes)
 router.use('/account-receivable', accountReceivableMovementRoutes)
 
