@@ -182,17 +182,20 @@ model Purchase {
 }
 
 model FinancialSecurity {
-  id            String   @id @default(uuid())
-  purchaseId    String   @map("purchase_id")
-  purchase      Purchase @relation(fields: [purchaseId], references: [id])
-  invoiceNumber String   @map("invoice_number")
+  id            String    @id @default(uuid())
+  purchaseId    String?   @map("purchase_id")
+  purchase      Purchase? @relation(fields: [purchaseId], references: [id])
+  saleId        String?   @map("sale_id")
+  sale          Sale?     @relation(fields: [saleId], references: [id])
+  invoiceNumber String    @map("invoice_number")
   quota         Int
-  originalValue Int      @map("original_value")
-  dueDate       DateTime @map("due_date")
+  originalValue Int       @map("original_value")
+  dueDate       DateTime  @map("due_date")
   situation     Int
-  createdAt     DateTime @default(now()) @map("created_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
 
-  accountPayableMovements AccountPayableMovement[]
+  accountPayableMovements    AccountPayableMovement[]
+  accountReceivableMovements AccountReceivableMovement[]
 
   @@map("financial_securities")
 }
@@ -224,15 +227,16 @@ model Client {
 }
 
 model Sale {
-  id            String        @id @default(uuid())
-  clientId      String        @map("client_id")
-  client        Client        @relation(fields: [clientId], references: [id])
-  invoiceNumber String        @map("invoice_number")
-  saleDate      DateTime      @map("sale_date")
-  createdAt     DateTime      @default(now()) @map("created_at")
-  createdBy     String
-  user          User          @relation(fields: [createdBy], references: [id])
-  saleDetails   SaleDetails[]
+  id                  String              @id @default(uuid())
+  clientId            String              @map("client_id")
+  client              Client              @relation(fields: [clientId], references: [id])
+  invoiceNumber       String              @map("invoice_number")
+  saleDate            DateTime            @map("sale_date")
+  createdAt           DateTime            @default(now()) @map("created_at")
+  createdBy           String
+  user                User                @relation(fields: [createdBy], references: [id])
+  saleDetails         SaleDetails[]
+  financialSecurities FinancialSecurity[]
 
   @@map("sales")
 }
@@ -247,4 +251,19 @@ model SaleDetails {
   unitPrice  Int     @map("unit_price")
 
   @@map("sale_details")
+}
+
+model AccountReceivableMovement {
+  id                  String            @id @default(uuid())
+  financialSecurityId String            @map("financial_security_id")
+  financialSecurity   FinancialSecurity @relation(fields: [financialSecurityId], references: [id])
+  movementDate        DateTime          @map("movement_date")
+  movementType        Int               @map("movement_type")
+  movementValue       Int               @map("movement_value")
+  interestValue       Int?              @map("interest_value")
+  fineValue           Int?              @map("fine_value")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("account_receivable_movements")
 }

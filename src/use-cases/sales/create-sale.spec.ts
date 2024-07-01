@@ -7,12 +7,16 @@ import { makeClient } from 'test/factories/make-client'
 import { makeProduct } from 'test/factories/make-product'
 import { InMemoryUsersRepository } from 'test/in-memory/in-memory-users-repository'
 import { makeUser } from 'test/factories/make-user'
+import { InMemoryFinancialSecuritiesRepository } from 'test/in-memory/in-memory-financial-securities-repository'
+import { InMemoryAccountReceivableMovementsRepository } from 'test/in-memory/in-memory-account-receivable-movements-repository'
 
 let inMemoryClientsRepository: InMemoryClientsRepository
 let inMemoryUsersRepository: InMemoryUsersRepository
 let inMemorySalesRepository: InMemorySalesRepository
 let inMemoryProductsRepository: InMemoryProductsRepository
 let inMemorySaleDetailsRepository: InMemorySaleDetailsRepository
+let inMemoryFinancialSecuritiesRepository: InMemoryFinancialSecuritiesRepository
+let inMemoryAccountReceivableMovementsRepository: InMemoryAccountReceivableMovementsRepository
 
 let sut: CreateSaleUseCase
 
@@ -25,6 +29,10 @@ describe('Create sale', () => {
       inMemorySaleDetailsRepository,
     )
     inMemoryProductsRepository = new InMemoryProductsRepository()
+    inMemoryFinancialSecuritiesRepository =
+      new InMemoryFinancialSecuritiesRepository()
+    inMemoryAccountReceivableMovementsRepository =
+      new InMemoryAccountReceivableMovementsRepository()
 
     sut = new CreateSaleUseCase(
       inMemoryClientsRepository,
@@ -32,6 +40,8 @@ describe('Create sale', () => {
       inMemorySalesRepository,
       inMemoryProductsRepository,
       inMemorySaleDetailsRepository,
+      inMemoryFinancialSecuritiesRepository,
+      inMemoryAccountReceivableMovementsRepository,
     )
   })
 
@@ -55,6 +65,8 @@ describe('Create sale', () => {
           productId: product.id,
           soldAmount: 100,
           unitPrice: 10000,
+          dueAtEachTime: 30,
+          quotes: 10,
         },
       ],
     })
@@ -101,6 +113,8 @@ describe('Create sale', () => {
           productId: 'any',
           soldAmount: 100,
           unitPrice: 10000,
+          dueAtEachTime: 30,
+          quotes: 10,
         },
       ],
     })

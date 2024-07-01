@@ -7,4 +7,6 @@ export interface FinancialSecuritiesRepository {
   update(financialSecurity: FinancialSecurity): Promise<void>
   findById(id: string): Promise<FinancialSecurity | null>
   listByPurchaseId(purchaseId: string): Promise<FinancialSecurity[]>
+  listBySaleId(saleId: string): Promise<FinancialSecurity[]>
+  delete(id: string): Promise<void>
 }

@@ -13,6 +13,7 @@ export class InMemoryFinancialSecuritiesRepository
     const financialSecurity = {
       id: randomUUID(),
       purchaseId: data.purchaseId,
+      saleId: data.saleId,
       invoiceNumber: data.invoiceNumber,
       quota: data.quota,
       originalValue: data.originalValue,
@@ -60,5 +61,19 @@ export class InMemoryFinancialSecuritiesRepository
       .filter((item) => item.purchaseId === purchaseId)
 
     return financialSecurities
+  }
+
+  async listBySaleId(saleId: string): Promise<FinancialSecurity[]> {
+    const financialSecurities = this.items
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+      .filter((item) => item.saleId === saleId)
+
+    return financialSecurities
+  }
+
+  async delete(id: string): Promise<void> {
+    const itemIndex = this.items.findIndex((item) => item.id === id)
+
+    this.items.splice(itemIndex, 1)
   }
 }

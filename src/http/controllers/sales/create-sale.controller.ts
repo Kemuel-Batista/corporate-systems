@@ -7,6 +7,8 @@ const saleDetailsSchema = z.object({
   productId: z.string().uuid(),
   soldAmount: z.number().int().positive(),
   unitPrice: z.number().int().positive(),
+  quotes: z.number().int().positive(),
+  dueAtEachTime: z.number().int().positive(),
 })
 
 const createSaleBodySchema = z.object({

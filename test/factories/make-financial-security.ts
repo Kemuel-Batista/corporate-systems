@@ -9,6 +9,7 @@ export function makeFinancialSecurity(
   return {
     id: randomUUID(),
     purchaseId: randomUUID(),
+    saleId: null,
     invoiceNumber: faker.commerce.isbn(13),
     quota: faker.number.int({ max: 10 }),
     originalValue: faker.number.int({ max: 10000 }),

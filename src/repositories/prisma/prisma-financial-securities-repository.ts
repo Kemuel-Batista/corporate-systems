@@ -69,4 +69,22 @@ export class PrismaFinancialSecuritiesRepository
 
     return financialSecurities
   }
+
+  async listBySaleId(saleId: string): Promise<FinancialSecurity[]> {
+    const financialSecurities = await prisma.financialSecurity.findMany({
+      where: {
+        saleId,
+      },
+    })
+
+    return financialSecurities
+  }
+
+  async delete(id: string): Promise<void> {
+    await prisma.financialSecurity.delete({
+      where: {
+        id,
+      },
+    })
+  }
 }
