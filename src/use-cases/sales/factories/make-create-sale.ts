@@ -6,6 +6,7 @@ import { PrismaProductsRepository } from '@/repositories/prisma/prisma-products-
 import { PrismaSaleDetailsRepository } from '@/repositories/prisma/prisma-sale-details-repository'
 import { PrismaFinancialSecuritiesRepository } from '@/repositories/prisma/prisma-financial-securities-repository'
 import { PrismaAccountReceivableMovementsRepository } from '@/repositories/prisma/prisma-account-receivable-movements-repository'
+import { PrismaProductMovementRepository } from '@/repositories/prisma/prisma-product-movement-repository'
 
 export function makeCreateSaleUseCase() {
   const clientsRepository = new PrismaClientsRepository()
@@ -17,6 +18,7 @@ export function makeCreateSaleUseCase() {
     new PrismaFinancialSecuritiesRepository()
   const accountReceivableMovementsRepository =
     new PrismaAccountReceivableMovementsRepository()
+  const productMovementRepository = new PrismaProductMovementRepository()
 
   const createSaleUseCase = new CreateSaleUseCase(
     clientsRepository,
@@ -26,6 +28,7 @@ export function makeCreateSaleUseCase() {
     saleDetailsRepository,
     financialSecuritiesRepository,
     accountReceivableMovementsRepository,
+    productMovementRepository,
   )
 
   return createSaleUseCase

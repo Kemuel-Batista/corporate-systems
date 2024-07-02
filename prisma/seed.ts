@@ -111,7 +111,7 @@ async function createProducts(user: User): Promise<void> {
 }
 
 async function createSuppliers(user: User): Promise<void> {
-  await prisma.product.upsert({
+  await prisma.supplier.upsert({
     where: {
       name: 'Supplier-01',
     },
@@ -124,7 +124,7 @@ async function createSuppliers(user: User): Promise<void> {
     update: {},
   })
 
-  await prisma.product.upsert({
+  await prisma.supplier.upsert({
     where: {
       name: 'Supplier-02',
     },
@@ -139,26 +139,26 @@ async function createSuppliers(user: User): Promise<void> {
 }
 
 async function createCostCenters(user: User): Promise<void> {
-  await prisma.product.upsert({
+  await prisma.costCenter.upsert({
     where: {
-      name: 'Cost-Center-01',
+      code: 'Cost-Center-01',
     },
     create: {
-      name: 'Cost-Center-01',
-      description: 'Cost-Center 01',
+      code: 'Cost-Center-01',
+      name: 'Cost-Center 01',
       status: CostCenterStatus.ACTIVE,
       createdBy: user.id,
     },
     update: {},
   })
 
-  await prisma.product.upsert({
+  await prisma.costCenter.upsert({
     where: {
-      name: 'Cost-Center-02',
+      code: 'Cost-Center-02',
     },
     create: {
-      name: 'Cost-Center-02',
-      description: 'Cost-Center 02',
+      code: 'Cost-Center-02',
+      name: 'Cost-Center 02',
       status: CostCenterStatus.ACTIVE,
       createdBy: user.id,
     },

@@ -7,6 +7,7 @@ export class PrismaFinancialSecuritiesRepository
 {
   async create({
     purchaseId,
+    saleId,
     invoiceNumber,
     quota,
     originalValue,
@@ -16,6 +17,7 @@ export class PrismaFinancialSecuritiesRepository
     const financialSecurity = await prisma.financialSecurity.create({
       data: {
         purchaseId,
+        saleId,
         invoiceNumber,
         quota,
         originalValue,

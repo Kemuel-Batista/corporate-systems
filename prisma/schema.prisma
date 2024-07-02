@@ -119,7 +119,7 @@ model ProductMovement {
   warehouseId  String    @map("warehouse_id")
   warehouse    Warehouse @relation(fields: [warehouseId], references: [id])
   movementType Int
-  quantity     Int
+  quantity     Float
   value        Int
   createdAt    DateTime  @default(now()) @map("created_at")
 

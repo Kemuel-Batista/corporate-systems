@@ -2,9 +2,11 @@ import { Either, failure, success } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { AccountPayableMovementType } from '@/enums/account-payable-movement'
 import { FinancialSecuritySituation } from '@/enums/financial-security'
+import { MovementType } from '@/enums/product-movement'
 import { AccountReceivableMovementsRepository } from '@/repositories/account-receivable-movements-repository'
 import { ClientsRepository } from '@/repositories/clients-repository'
 import { FinancialSecuritiesRepository } from '@/repositories/financial-securities-repository'
+import { ProductMovementRepository } from '@/repositories/product-movement-repository'
 import { ProductsRepository } from '@/repositories/products-repository'
 import { SaleDetailsRepository } from '@/repositories/sale-details-repository'
 import { SalesRepository } from '@/repositories/sales-repository'
@@ -23,6 +25,8 @@ interface CreateSaleUseCaseRequest {
     unitPrice?: number
     quotes?: number
     dueAtEachTime?: number
+    isInCash?: boolean
+    warehouseId?: string
   }[]
 }
 
@@ -42,6 +46,7 @@ export class CreateSaleUseCase {
     private saleDetailsRepository: SaleDetailsRepository,
     private financialSecuritiesRepository: FinancialSecuritiesRepository,
     private accountReceivableMovementsRepository: AccountReceivableMovementsRepository,
+    private productMovementRepository: ProductMovementRepository,
   ) {}
 
   async execute({
@@ -86,44 +91,81 @@ export class CreateSaleUseCase {
         unitPrice: saleDetail.unitPrice,
       })
 
-      const quotes = saleDetail.quotes
       const dueAtEachTime = saleDetail.dueAtEachTime
-
-      const quotaValue = (saleDetail.soldAmount * saleDetail.unitPrice) / quotes
-
-      const quotesArray: number[] = Array.from(
-        { length: quotes },
-        (_, i) => i + 1,
-      )
-      const financialsArray: FinancialSecurity[] = []
 
       const now = new Date()
       let currentDueDate = now
 
-      for (const quota of quotesArray) {
-        const dueDate = calculateDueDate(currentDueDate, dueAtEachTime)
+      if (saleDetail.isInCash === false) {
+        const quotes = saleDetail.quotes
 
+        const quotaValue =
+          (saleDetail.soldAmount * saleDetail.unitPrice) / quotes
+
+        const quotesArray: number[] = Array.from(
+          { length: quotes },
+          (_, i) => i + 1,
+        )
+        const financialsArray: FinancialSecurity[] = []
+
+        for (const quota of quotesArray) {
+          const dueDate = calculateDueDate(currentDueDate, dueAtEachTime)
+
+          const financialSecurity =
+            await this.financialSecuritiesRepository.create({
+              saleId: sale.id,
+              quota,
+              originalValue: quotaValue,
+              invoiceNumber,
+              dueDate,
+              situation: FinancialSecuritySituation.PENDING,
+            })
+
+          currentDueDate = dueDate
+
+          financialsArray.push(financialSecurity)
+        }
+
+        for (const financialSecurity of financialsArray) {
+          await this.accountReceivableMovementsRepository.create({
+            financialSecurityId: financialSecurity.id,
+            movementDate: new Date(),
+            movementType: AccountPayableMovementType.ABERTURA,
+            movementValue: -saleDetail.unitPrice,
+          })
+        }
+      } else {
         const financialSecurity =
           await this.financialSecuritiesRepository.create({
             saleId: sale.id,
-            quota,
-            originalValue: quotaValue,
+            quota: 1,
+            originalValue: saleDetail.soldAmount,
             invoiceNumber,
-            dueDate,
-            situation: FinancialSecuritySituation.PENDING,
+            dueDate: now,
+            situation: FinancialSecuritySituation.COMPLETED,
           })
 
-        currentDueDate = dueDate
-
-        financialsArray.push(financialSecurity)
-      }
-
-      for (const financialSecurity of financialsArray) {
         await this.accountReceivableMovementsRepository.create({
           financialSecurityId: financialSecurity.id,
           movementDate: new Date(),
           movementType: AccountPayableMovementType.ABERTURA,
+          movementValue: saleDetail.unitPrice,
+        })
+
+        await this.accountReceivableMovementsRepository.create({
+          financialSecurityId: financialSecurity.id,
+          movementDate: new Date(),
+          movementType: AccountPayableMovementType.PAGAMENTO,
           movementValue: -saleDetail.unitPrice,
+        })
+
+        await this.productMovementRepository.create({
+          movementType: MovementType.EXIT_BY_SALE,
+          productId: saleDetail.productId,
+          warehouseId: saleDetail.warehouseId,
+          quantity: -saleDetail.soldAmount,
+          value: saleDetail.unitPrice,
+          createdAt: new Date(),
         })
       }
     }
